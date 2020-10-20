@@ -1,7 +1,6 @@
 const express = require("express");
 const router = require("./router/user-router");
 const mysql = require("mysql");
-
 //导入 cors 中间件
 const cors = require("cors");
 
