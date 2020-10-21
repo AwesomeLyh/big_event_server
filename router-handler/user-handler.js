@@ -3,6 +3,7 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("./config");
 
+//sql
 const q_username = "SELECT * FROM ev_users WHERE username=?";
 const i_user = "INSERT INTO ev_users set ?";
 
@@ -44,7 +45,7 @@ exports.regUser = (req, res) => {
 };
 
 //登录
-exports.login = (req, res) => {
+exports.login = (req, res) => { 
   const userInfo = req.body;
   //非空校验
   if (!userInfo.username || !userInfo.password) {
@@ -59,15 +60,15 @@ exports.login = (req, res) => {
     if (result.length !== 1) {
       return res.cc("登录失败");
     }
-    
-    //TODO : DEBUG
-    console.log(result[0].password);
-    console.log(userInfo.password);
+
+
+    //比对输入和查询到的密码
     const compareResult = bcryptjs.compareSync(
       userInfo.password,
       result[0].password
     );
     console.log(compareResult);
+
     //登陆失败
     if (!compareResult) return res.cc("密码错误");
 
@@ -79,7 +80,7 @@ exports.login = (req, res) => {
     res.send({
       status: 0,
       message: "登录成功",
-      token: "Bearer" + tokenStr,
+      token: "Bearer:" + tokenStr,
     });
   });
 };

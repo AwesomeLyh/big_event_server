@@ -1,6 +1,5 @@
 const express = require("express");
 const router = require("./router/user-router");
-const mysql = require("mysql");
 const joi = require("@hapi/joi");
 //导入 cors 中间件
 const cors = require("cors");
@@ -10,14 +9,6 @@ const app = express();
 app.listen(3000, (err) => {
   if (err) return console.log("Error");
   console.log("Server Running At Port 3000");
-});
-
-// 数据库连接实例
-const db = mysql.createPool({
-  host: "127.0.0.1",
-  user: "root",
-  password: "132456",
-  database: "my_db",
 });
 
 // 将 cors 注册为全局中间件

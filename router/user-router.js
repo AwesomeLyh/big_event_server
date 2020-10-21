@@ -4,7 +4,7 @@ const handler = require("../router-handler/user-handler");
 const expressJoi = require("@escook/express-joi");
 const { reg_login_scheme } = require("../schema/user");
 
-router.get("/login", expressJoi(reg_login_scheme), handler.login);
+router.post("/login", expressJoi(reg_login_scheme), handler.login);
 
 router.post("/register", expressJoi(reg_login_scheme), handler.regUser);
 
