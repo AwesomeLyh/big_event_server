@@ -1,9 +1,12 @@
 const db = require("../db/index");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("./config");
 
 const q_username = "SELECT * FROM ev_users WHERE username=?";
 const i_user = "INSERT INTO ev_users set ?";
 
+//注册
 exports.regUser = (req, res) => {
   const userInfo = req.body;
   //非空校验
@@ -34,13 +37,49 @@ exports.regUser = (req, res) => {
       }
       res.send({ status: 0, message: "注册成功" });
     });
-    
   });
 
   //密码加密
   userInfo.password = bcryptjs.hashSync(userInfo.password, 10);
 };
 
+//登录
 exports.login = (req, res) => {
-  res.send("Login Success");
+  const userInfo = req.body;
+  //非空校验
+  if (!userInfo.username || !userInfo.password) {
+    return res.cc("用户名及密码不能为空");
+  }
+
+  //查询用户名
+  db.query(q_username, [userInfo.username], (err, result) => {
+    if (err) {
+      return res.cc(err.message);
+    }
+    if (result.length !== 1) {
+      return res.cc("登录失败");
+    }
+    
+    //TODO : DEBUG
+    console.log(result[0].password);
+    console.log(userInfo.password);
+    const compareResult = bcryptjs.compareSync(
+      userInfo.password,
+      result[0].password
+    );
+    console.log(compareResult);
+    //登陆失败
+    if (!compareResult) return res.cc("密码错误");
+
+    //成功返回token
+    const user = { ...result[0], password: "", user_pic: "" };
+    const tokenStr = jwt.sign(user, config.jwtSecretKey, {
+      expiresIn: "10h",
+    });
+    res.send({
+      status: 0,
+      message: "登录成功",
+      token: "Bearer" + tokenStr,
+    });
+  });
 };
