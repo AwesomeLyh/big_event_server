@@ -61,7 +61,6 @@ exports.login = (req, res) => {
       return res.cc("登录失败");
     }
 
-
     //比对输入和查询到的密码
     const compareResult = bcryptjs.compareSync(
       userInfo.password,
@@ -80,7 +79,7 @@ exports.login = (req, res) => {
     res.send({
       status: 0,
       message: "登录成功",
-      token: "Bearer:" + tokenStr,
+      token: "Bearer" + tokenStr,
     });
   });
 };

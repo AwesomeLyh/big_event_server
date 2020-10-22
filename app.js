@@ -1,5 +1,8 @@
 const express = require("express");
 const router = require("./router/user-router");
+const router_info = require("./router/user-info-router");
+const expressJWT = require("express-jwt");
+const key = require("./router-handler/config");
 const joi = require("@hapi/joi");
 //导入 cors 中间件
 const cors = require("cors");
@@ -32,13 +35,20 @@ app.use((req, res, next) => {
   next();
 });
 
+//token解析
+app.use(
+  expressJWT({ secret: key.jwtSecretKey }).unless({ path: [/^\/api\//] })
+);
 //挂载路由
 app.use("/api", router);
+app.use("/my", router_info);
 
 //捕获异常
 app.use((err, rq, res, next) => {
-  //数据校验不和法
+  //表单数据校验
   if (err instanceof joi.ValidationError) return res.cc(err);
+  //身份认证事变
+  if (err.name == "UnauthorizedError") return res.cc("身份认证失败");
   //未知错误
   res.cc(err);
 });

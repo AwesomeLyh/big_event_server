@@ -12,9 +12,39 @@ const password = joi
   .pattern(/^[\S]{6,12}$/)
   .required();
 
+const id = joi.number().integer().min(1).required();
+const nickname = joi.string().required();
+const user_email = joi.string().email().required();
+const avatar = joi.string().dataUri().required();
+
+// 验证登陆表单数据的规则
 module.exports.reg_login_scheme = {
   body: {
     username,
     password,
   },
+};
+
+// 验证更新用户信息数据的规则
+module.exports.update_userinfo_scheme = {
+  body: {
+    id,
+    nickname,
+    email: user_email,
+  },
+};
+
+// 验证更新用户密码数据的规则
+module.exports.update_userpwd_scheme = {
+  id,
+  oldPwd: password,
+  // 1. joi.ref('oldPwd') 表示 newPwd 的值必须和 oldPwd 的值保持一致
+  // 2. joi.not(joi.ref('oldPwd')) 表示 newPwd 的值不能等于 oldPwd 的值
+  // 3. .concat() 用于合并 joi.not(joi.ref('oldPwd')) 和 password 这两条验证规则
+  newPwd: joi.not(joi.ref("oldPwd")).concat(password),
+};
+
+// 验证更新用户头像数据的规则
+module.exports.update_avatar_scheme = {
+  avatar,
 };
