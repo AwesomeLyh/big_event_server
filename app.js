@@ -1,6 +1,7 @@
 const express = require("express");
 const router = require("./router/user-router");
 const router_info = require("./router/user-info-router");
+const router_art = require("./router/article-create");
 const expressJWT = require("express-jwt");
 const key = require("./router-handler/config");
 const joi = require("@hapi/joi");
@@ -42,6 +43,7 @@ app.use(
 //挂载路由
 app.use("/api", router);
 app.use("/my", router_info);
+app.use("/my/article", router_art);
 
 //捕获异常
 app.use((err, rq, res, next) => {

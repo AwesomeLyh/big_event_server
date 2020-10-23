@@ -45,7 +45,7 @@ exports.regUser = (req, res) => {
 };
 
 //登录
-exports.login = (req, res) => { 
+exports.login = (req, res) => {
   const userInfo = req.body;
   //非空校验
   if (!userInfo.username || !userInfo.password) {
@@ -79,7 +79,7 @@ exports.login = (req, res) => {
     res.send({
       status: 0,
       message: "登录成功",
-      token: "Bearer" + tokenStr,
+      token: "Bearer " + tokenStr,
     });
   });
 };

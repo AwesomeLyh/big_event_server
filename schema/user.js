@@ -16,6 +16,8 @@ const id = joi.number().integer().min(1).required();
 const nickname = joi.string().required();
 const user_email = joi.string().email().required();
 const avatar = joi.string().dataUri().required();
+const art_name = joi.string().required();
+const art_alias = joi.string().alphanum().required();
 
 // 验证登陆表单数据的规则
 module.exports.reg_login_scheme = {
@@ -47,4 +49,22 @@ module.exports.update_userpwd_scheme = {
 // 验证更新用户头像数据的规则
 module.exports.update_avatar_scheme = {
   avatar,
+};
+
+//验证新增文章的表单数据校验
+module.exports.insert_artilce_schme = {
+  name: art_name,
+  alias: art_alias,
+};
+
+//验证删除文章的表单数据校验
+module.exports.delete_artilce_schme = {
+  id,
+};
+
+//验证文章更新的表单数据校验
+module.exports.update_cate_schema = {
+  id,
+  name: art_name,
+  alias: art_alias,
 };
