@@ -1,12 +1,13 @@
 const express = require("express");
+const joi = require("@hapi/joi");
+const expressJWT = require("express-jwt");
+const cors = require("cors");
+
 const router = require("./router/user-router");
 const router_info = require("./router/user-info-router");
-const router_art = require("./router/article-create");
-const expressJWT = require("express-jwt");
+const router_art_cate = require("./router/article-cate");
+const router_art = require("./router/article");
 const key = require("./router-handler/config");
-const joi = require("@hapi/joi");
-//导入 cors 中间件
-const cors = require("cors");
 
 // 启动服务
 const app = express();
@@ -37,13 +38,16 @@ app.use((req, res, next) => {
 });
 
 //token解析
-app.use(
-  expressJWT({ secret: key.jwtSecretKey }).unless({ path: [/^\/api\//] })
-);
+app.use(expressJWT({ secret: key.jwtSecretKey }).unless({ path: [/^\/api\//] }));
+
 //挂载路由
 app.use("/api", router);
 app.use("/my", router_info);
+app.use("/my/article", router_art_cate);
 app.use("/my/article", router_art);
+
+//挂载静态资源
+app.use("./upload", express.static("./upload"));
 
 //捕获异常
 app.use((err, rq, res, next) => {

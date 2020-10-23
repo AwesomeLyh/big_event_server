@@ -18,6 +18,10 @@ const user_email = joi.string().email().required();
 const avatar = joi.string().dataUri().required();
 const art_name = joi.string().required();
 const art_alias = joi.string().alphanum().required();
+const title = joi.string().required();
+const cate_id = joi.number().integer().min(1).required();
+const content = joi.string().required().allow("");
+const state = joi.string().valid("已发布", "草稿").required();
 
 // 验证登陆表单数据的规则
 module.exports.reg_login_scheme = {
@@ -51,20 +55,28 @@ module.exports.update_avatar_scheme = {
   avatar,
 };
 
-//验证新增文章的表单数据校验
+//验证新增文章l类别的表单数据校验
 module.exports.insert_artilce_schme = {
   name: art_name,
   alias: art_alias,
 };
 
-//验证删除文章的表单数据校验
+//验证删除文章类别的表单数据校验
 module.exports.delete_artilce_schme = {
   id,
 };
 
-//验证文章更新的表单数据校验
+//验证文章更新类别的表单数据校验
 module.exports.update_cate_schema = {
   id,
   name: art_name,
   alias: art_alias,
+};
+
+//校验添加文章 的表达那数据校验
+module.exports.add_article_schema = {
+  title,
+  cate_id,
+  content,
+  state,
 };
