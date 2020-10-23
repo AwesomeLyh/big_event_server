@@ -5,7 +5,6 @@ const i_art = "insert into ev_articles set ?";
 
 //添加文章的hanfler
 exports.addArticle = (req, res) => {
-  console.log(req.file);
   if (!req.file || req.file.fieldname !== "cover_img")
     return res.cc("必须选择一个文章封面");
 

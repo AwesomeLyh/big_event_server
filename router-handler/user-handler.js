@@ -46,6 +46,7 @@ exports.regUser = (req, res) => {
 
 //登录
 exports.login = (req, res) => {
+  console.log("获取登录请求" + new Date());
   const userInfo = req.body;
   //非空校验
   if (!userInfo.username || !userInfo.password) {
@@ -62,10 +63,7 @@ exports.login = (req, res) => {
     }
 
     //比对输入和查询到的密码
-    const compareResult = bcryptjs.compareSync(
-      userInfo.password,
-      result[0].password
-    );
+    const compareResult = bcryptjs.compareSync(userInfo.password, result[0].password);
     console.log(compareResult);
 
     //登陆失败
