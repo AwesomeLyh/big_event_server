@@ -1,6 +1,6 @@
 const db = require("../db/index");
 
-const q_articles = "select * from ev_article_cate where is_ delete=0";
+const q_articles = "select * from ev_article_cate where is_delete=0";
 const q_artname = "select * from ev_article_cate where name=? or alias=?";
 const i_article = "insert into ev_article_cate set ? ";
 const d_artid = "update ev_article_cate set is_delete=1 where id=?";
