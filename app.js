@@ -47,6 +47,7 @@ app.use("/my/article", router_art_cate);
 app.use("/my/article", router_art);
 
 //挂载静态资源
+app.use("/api/doc", express.static("./public"));
 app.use("./upload", express.static("./upload"));
 
 //捕获异常
